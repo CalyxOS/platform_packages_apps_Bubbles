@@ -8,6 +8,7 @@ android_app {
     platform_apis: true,
 
     static_libs: [
+       "androidx.recyclerview_recyclerview",
        "com.google.android.material_material",
     ],
 }

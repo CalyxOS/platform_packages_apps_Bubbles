@@ -23,6 +23,11 @@ dependencies {
      * Using the AOSP versions in gradle builds allows us to spot issues early on.
      */
 
+    implementation('androidx.recyclerview:recyclerview') {
+        // https://android.googlesource.com/platform/prebuilts/sdk/+/refs/tags/android-11.0.0_r3/current/androidx/Android.bp#2546
+        version { strictly '1.2.0-alpha04' }
+    }
+
     implementation('com.google.android.material:material') {
         // https://android.googlesource.com/platform/prebuilts/sdk/+/refs/tags/android-11.0.0_r3/current/extras/material-design-x/Android.bp#6
         version { strictly '1.1.0-alpha05' }
