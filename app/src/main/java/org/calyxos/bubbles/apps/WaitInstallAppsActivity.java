@@ -103,13 +103,16 @@ public class WaitInstallAppsActivity extends Activity {
         return R.layout.wait_install_apps_activity;
     }
 
+    public void onNextPressed() {
+        getPackageManager().setDefaultBrowserPackageNameAsUser(DEFAULT_BROWSER, getUserId());
+    }
+
     private void afterAppsInstalled() {
         if (mProgressBar.isShown()) {
             mProgressBar.startAnimation(loadAnimation(this, R.anim.translucent_exit));
             mProgressBar.setVisibility(INVISIBLE);
             mWaitingForAppsText.setVisibility(INVISIBLE);
         }
-        getPackageManager().setDefaultBrowserPackageNameAsUser(DEFAULT_BROWSER, getUserId());
     }
 
     private boolean shouldWeWaitForApps() {
