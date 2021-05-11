@@ -36,6 +36,7 @@ import org.json.JSONObject;
 public class FDroidRepo {
 
     public static final String TAG = FDroidRepo.class.getSimpleName();
+    public static final String FALLBACK_ICON = "fallback-icon.png";
 
     public static final String FDROID_CATEGORY_DEFAULT = "Default";
     public static final String FDROID_CATEGORY_DEFAULT_BACKEND = "DefaultBackend";
@@ -92,8 +93,14 @@ public class FDroidRepo {
                 else checked = true;
             }
 
-            String iconPath = app.getString("icon");
+            String iconPath = "";
+            if (app.has("icon")) {
+                iconPath = app.getString("icon");
+            }
             Drawable icon = Drawable.createFromPath(path + "/icons-640/" + iconPath);
+            if (icon == null) {
+                icon = Drawable.createFromPath(path + "/" + FALLBACK_ICON);
+            }
             CharSequence name = app.getString("name");
             String packageName = app.getString("packageName");
             String apkName = apk.getString("apkName");
@@ -120,7 +127,7 @@ public class FDroidRepo {
                 categories, description, summary, checked);
             list.post(() -> adapter.addItem(item));
         } catch (JSONException e) {
-            Log.e(TAG, "Failed to add app" + e);
+            Log.e(TAG, "Failed to add app " + e);
         }
     }
 }
