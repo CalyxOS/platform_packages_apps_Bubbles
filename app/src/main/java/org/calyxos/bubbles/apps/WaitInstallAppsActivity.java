@@ -23,6 +23,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -45,10 +46,19 @@ public class WaitInstallAppsActivity extends Activity {
     public static final String ACTION_APPS_INSTALLED = "org.calyxos.bubbles.CALYX_APPS_INSTALLED";
     private static final String DEFAULT_BROWSER = "com.duckduckgo.mobile.android";
 
+    private final Handler mHandler = new Handler();
+
     private ProgressBar mProgressBar;
     private TextView mWaitingForAppsText;
 
     private String path;
+
+    private final Runnable mDoneWaitingForApps = new Runnable() {
+        public void run() {
+            // This will be run if apps haven't finished installing in 60 seconds,
+            // to prevent getting stuck in SetupWizard.
+        }
+    };
 
     private final BroadcastReceiver packageReceiver = new BroadcastReceiver() {
         @Override
@@ -72,6 +82,9 @@ public class WaitInstallAppsActivity extends Activity {
         if (!shouldWeWaitForApps()) {
             afterAppsInstalled();
         } else {
+            // Post this to eventually let the user go next if something goes wrong
+            mHandler.postDelayed(mDoneWaitingForApps, 60 * 1000);
+            // But first they have to wait for apps to install
             if (!mProgressBar.isShown()) {
                 mProgressBar.setVisibility(View.VISIBLE);
                 mWaitingForAppsText.setVisibility(View.VISIBLE);
