@@ -5,10 +5,21 @@ android_app {
     resource_dirs: ["app/src/main/res"],
     manifest: "app/src/main/AndroidManifest.xml",
 
+    privileged: true,
     platform_apis: true,
 
     static_libs: [
        "androidx.recyclerview_recyclerview",
        "com.google.android.material_material",
     ],
+
+    required: ["privapp_whitelist_org.calyxos.bubbles"],
+}
+
+prebuilt_etc {
+    name: "privapp_whitelist_org.calyxos.bubbles",
+    system_ext_specific: true,
+    src: "privapp_whitelist_org.calyxos.bubbles.xml",
+    sub_dir: "permissions",
+    filename_from_src: true,
 }
