@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="org.calyxos.bubbles"
     android:versionCode="30000001"
     android:versionName="11-1.0">
@@ -8,7 +9,8 @@
     The version name is the targeted Android version followed by - and our own version name.
     -->
 
-    <uses-permission android:name="android.permission.INTERACT_ACROSS_USERS_FULL" />
+    <uses-permission android:name="android.permission.INTERACT_ACROSS_USERS_FULL"
+        tools:ignore="ProtectedPermissions" />
     <uses-permission android:name="org.calyxos.bubbles.permission.FINISH_SETUP" />
 
     <permission
@@ -16,7 +18,8 @@
         android:protectionLevel="signatureOrSystem" />
 
     <protected-broadcast android:name="org.calyxos.bubbles.CALYX_APPS_INSTALLED"
-                         android:permission="org.calyxos.bubbles.permission.FINISH_SETUP"/>
+                         android:permission="org.calyxos.bubbles.permission.FINISH_SETUP"
+        tools:ignore="InvalidPermission" />
 
     <application
         android:allowBackup="true"
