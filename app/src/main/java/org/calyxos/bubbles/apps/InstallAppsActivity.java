@@ -54,6 +54,7 @@ public class InstallAppsActivity extends Activity implements AppItemListener {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.install_apps_activity);
 
         list = findViewById(R.id.list);
         adapter = new AppAdapter(this);
