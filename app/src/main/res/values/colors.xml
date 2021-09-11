@@ -38,4 +38,6 @@
     <color name="header_condensed_bg">@color/primary</color>
     <color name="button_bar_background">@color/primary</color>
     <color name="biometric_setup_text_color">#99CC00</color>
+
+    <color name="gray">#FFA6A6A6</color>
 </resources>
