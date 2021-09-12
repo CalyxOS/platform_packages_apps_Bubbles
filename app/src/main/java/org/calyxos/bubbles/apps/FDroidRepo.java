@@ -111,6 +111,12 @@ public class FDroidRepo {
             if (app.has("summary")) {
                 summary = app.getString("summary");
             }
+
+            String author = "";
+            if (app.has("authorName")) {
+                summary = app.getString("authorName");
+            }
+
             if (app.has("localized")) {
                 JSONObject localized = app.getJSONObject("localized");
                 Set<String> localesToUse = FDroidUtils.getlocalesToUse(localized);
@@ -120,6 +126,8 @@ public class FDroidRepo {
                 if (!TextUtils.isEmpty(value)) description = FDroidUtils.formatDescription(value);
                 value = FDroidUtils.getLocalizedEntry(localized, localesToUse, "summary");
                 if (!TextUtils.isEmpty(value)) summary = value;
+                value = FDroidUtils.getLocalizedEntry(localized, localesToUse, "authorName");
+                if (!TextUtils.isEmpty(value)) author = value;
                 value = FDroidUtils.getLocalizedEntry(localized, localesToUse, "icon");
                 if (!TextUtils.isEmpty(value)) iconPath = path + "/" + packageName + "/en-US/" + value;
             }
@@ -130,7 +138,7 @@ public class FDroidRepo {
             }
 
             AppItem item = new AppItem(icon, name, packageName, apkName,
-                categories, description, summary, checked);
+                categories, description, summary, author, checked);
             list.post(() -> adapter.addItem(item));
         } catch (JSONException e) {
             Log.e(TAG, "Failed to add app " + e);

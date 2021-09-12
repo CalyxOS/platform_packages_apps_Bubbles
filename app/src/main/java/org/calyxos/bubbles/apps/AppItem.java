@@ -35,10 +35,12 @@ public class AppItem {
     final String description;
     @Nullable
     final String summary;
+    @Nullable
+    final String author;
     boolean checked;
 
     AppItem(@Nullable Drawable icon, @Nullable CharSequence name, String packageName, String apkName,
-        ArrayList<String> categories, String description, String summary, boolean checked) {
+        ArrayList<String> categories, String description, String summary, String author, boolean checked) {
         this.icon = icon;
         this.name = name;
         this.packageName = packageName;
@@ -46,6 +48,7 @@ public class AppItem {
         this.categories = categories;
         this.description = description;
         this.summary = summary;
+        this.author = author;
         this.checked = checked;
     }
 
@@ -75,6 +78,10 @@ public class AppItem {
 
     public String getSummary() {
         return summary;
+    }
+
+    public String getAuthor() {
+        return author;
     }
 
     public boolean isChecked() {
