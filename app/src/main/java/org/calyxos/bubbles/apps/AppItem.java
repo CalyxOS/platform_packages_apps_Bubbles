@@ -49,6 +49,42 @@ public class AppItem {
         this.checked = checked;
     }
 
+    public Drawable getIcon() {
+        return icon;
+    }
+
+    public CharSequence getName() {
+        return name;
+    }
+
+    public String getPackageName() {
+        return packageName;
+    }
+
+    public String getApkName() {
+        return apkName;
+    }
+
+    public ArrayList<String> getCategories() {
+        return categories;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public String getSummary() {
+        return summary;
+    }
+
+    public boolean isChecked() {
+        return checked;
+    }
+
+    public void setChecked(boolean checked) {
+        this.checked = checked;
+    }
+
     @Override
     public boolean equals(@Nullable Object o) {
         return o instanceof AppItem && packageName.equals(((AppItem) o).packageName);
