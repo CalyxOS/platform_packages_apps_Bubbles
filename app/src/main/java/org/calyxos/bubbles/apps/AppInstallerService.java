@@ -38,8 +38,8 @@ import static java.util.Objects.requireNonNull;
 
 public class AppInstallerService extends IntentService {
 
-    static final String APKS = "apks";
-    static final String PATH = "path";
+    public static final String APKS = "apks";
+    public static final String PATH = "path";
 
     public static final String FINISH_SETUP = "org.calyxos.bubbles.permission.FINISH_SETUP";
     public static final String ACTION_APPS_INSTALLED = "org.calyxos.bubbles.CALYX_APPS_INSTALLED";
