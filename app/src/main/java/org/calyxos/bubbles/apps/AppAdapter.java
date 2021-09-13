@@ -17,10 +17,12 @@
 package org.calyxos.bubbles.apps;
 
 import android.annotation.NonNull;
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView.Adapter;
 import androidx.recyclerview.widget.SortedList;
 import androidx.recyclerview.widget.SortedList.Callback;
@@ -31,6 +33,7 @@ import java.util.ArrayList;
 
 class AppAdapter extends Adapter<AppViewHolder> {
 
+    private final FragmentActivity mActivity;
     private final AppItemListener listener;
     private final SortedList<AppItem> items = new SortedList<>(AppItem.class, new Callback<AppItem>() {
         @Override
@@ -71,15 +74,16 @@ class AppAdapter extends Adapter<AppViewHolder> {
         }
     });
 
-    AppAdapter(AppItemListener listener) {
+    AppAdapter(AppItemListener listener, FragmentActivity activity) {
         this.listener = listener;
+        mActivity = activity;
     }
 
     @NonNull
     @Override
     public AppViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.list_item_app, viewGroup, false);
-        return new AppViewHolder(v, listener);
+        return new AppViewHolder(v, listener, mActivity);
     }
 
     @Override

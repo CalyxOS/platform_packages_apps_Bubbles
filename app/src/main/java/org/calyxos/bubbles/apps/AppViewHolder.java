@@ -22,10 +22,12 @@ import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView.ViewHolder;
 
 import org.calyxos.bubbles.R;
 import org.calyxos.bubbles.apps.AppAdapter.AppItemListener;
+import org.calyxos.bubbles.apps.dialog.AppInfoDialogFragment;
 
 
 class AppViewHolder extends ViewHolder {
@@ -36,17 +38,26 @@ class AppViewHolder extends ViewHolder {
     private final CheckBox checkBox;
     private final AppItemListener listener;
 
-    AppViewHolder(@NonNull View v, AppItemListener listener) {
+    private final AppInfoDialogFragment dialog;
+
+    AppViewHolder(@NonNull View v, AppItemListener listener, FragmentActivity activity) {
         super(v);
         this.listener = listener;
         icon = v.findViewById(R.id.icon);
         name = v.findViewById(R.id.name);
         summary = v.findViewById(R.id.summary);
         checkBox = v.findViewById(R.id.checkBox);
-        v.setOnClickListener(view -> checkBox.toggle());
+
+        dialog = new AppInfoDialogFragment();
+
+        v.setOnClickListener(view ->
+                dialog.show(activity.getSupportFragmentManager(), "Dialog")//checkBox.toggle()
+        );
     }
 
     void bind(AppItem item) {
+        dialog.setApp(item);
+
         icon.setImageDrawable(item.icon);
         name.setText(item.name);
         summary.setText(item.summary);

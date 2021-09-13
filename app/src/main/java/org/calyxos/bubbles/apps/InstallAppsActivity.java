@@ -23,6 +23,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
+
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import org.calyxos.bubbles.R;
@@ -40,7 +42,7 @@ import static org.calyxos.bubbles.apps.AppInstallerService.APKS;
 import static org.calyxos.bubbles.apps.AppInstallerService.PATH;
 import static org.calyxos.bubbles.apps.FDroidRepo.FDROID_CATEGORY_DEFAULT;
 
-public class InstallAppsActivity extends Activity implements AppItemListener {
+public class InstallAppsActivity extends AppCompatActivity implements AppItemListener {
 
     public static final String TAG = InstallAppsActivity.class.getSimpleName();
 
@@ -57,7 +59,7 @@ public class InstallAppsActivity extends Activity implements AppItemListener {
         setContentView(R.layout.install_apps_activity);
 
         list = findViewById(R.id.list);
-        adapter = new AppAdapter(this);
+        adapter = new AppAdapter(this, this);
         list.setAdapter(adapter);
 
         checkBoxAll = findViewById(R.id.checkBoxAll);
