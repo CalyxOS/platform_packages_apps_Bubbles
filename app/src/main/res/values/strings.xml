@@ -24,4 +24,5 @@
     <string name="ok">OK</string>
     <string name="failed_install">%1$s failed to install.</string>
     <string name="successful_install">%1$s installed successfully.</string>
+    <string name="setup_microg"><b>microG Settings.</b> Setup microG service.</string>
 </resources>

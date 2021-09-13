@@ -12,6 +12,42 @@
     <include layout="@layout/header_condensed"
         android:visibility="gone"/>
 
+    <LinearLayout
+        android:id="@+id/microG"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@color/transparent_to_gray"
+        android:paddingStart="@dimen/content_margin_left"
+        android:paddingEnd="@dimen/data_switch_margin_right">
+
+        <ImageView
+            android:id="@+id/microGIcon"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_gravity="center_vertical"
+            android:scaleType="fitCenter"
+            android:src="@drawable/microg_icon"
+            tools:ignore="ContentDescription" />
+
+        <TextView
+            android:id="@+id/microGText"
+            style="@style/PageSummaryText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:singleLine="true"
+            android:ellipsize="marquee"
+            android:paddingStart="16dp"
+            android:paddingEnd="@dimen/content_margin_right"
+            android:paddingTop="@dimen/summary_margin_bottom"
+            android:paddingBottom="@dimen/summary_margin_bottom"
+            android:text="@string/setup_microg"
+            android:textSize="15sp" />
+
+    </LinearLayout>
+
+    <include layout="@layout/divider" />
+
     <TextView
         style="@style/PageSummaryText"
         android:layout_width="wrap_content"

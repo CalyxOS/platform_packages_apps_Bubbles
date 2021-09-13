@@ -68,10 +68,10 @@ public class FDroidRepo {
 
         List<ApplicationInfo> pks = new ArrayList<>();
 
-        for (UserInfo user : um.getProfiles(UserHandle.myUserId())) {
+        /*for (UserInfo user : um.getProfiles(UserHandle.myUserId())) {
             pks.addAll(pm.getInstalledApplicationsAsUser(PackageManager.GET_META_DATA, user.id));
-        }
-        //pks.addAll(pm.getInstalledApplications(PackageManager.GET_META_DATA)); //Used to test
+        }*/
+        pks.addAll(pm.getInstalledApplications(PackageManager.GET_META_DATA)); //Used to test
 
         try {
             File index = new File(path + "/index-v1.json");
