@@ -81,7 +81,7 @@ public class AppAdapter extends Adapter<AppViewHolder> {
     @Override
     public AppViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.list_item_app, viewGroup, false);
-        return new AppViewHolder(v, mActivity);
+        return new AppViewHolder(v, this, mActivity);
     }
 
     @Override
