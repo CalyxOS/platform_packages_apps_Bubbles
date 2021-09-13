@@ -17,32 +17,30 @@
 package org.calyxos.bubbles.apps;
 
 import android.annotation.Nullable;
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.CheckBox;
+import android.widget.ImageButton;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import org.calyxos.bubbles.R;
-import org.calyxos.bubbles.apps.AppAdapter.AppItemListener;
-
-import java.io.IOException;
-import java.io.File;
-import java.util.ArrayList;
-
 import org.json.JSONException;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+
 import static java.util.Objects.requireNonNull;
-import static org.calyxos.bubbles.apps.AppInstallerService.PACKAGENAMES;
 import static org.calyxos.bubbles.apps.AppInstallerService.APKS;
+import static org.calyxos.bubbles.apps.AppInstallerService.PACKAGENAMES;
 import static org.calyxos.bubbles.apps.AppInstallerService.PATH;
 import static org.calyxos.bubbles.apps.FDroidRepo.FDROID_CATEGORY_DEFAULT;
 
-public class InstallAppsActivity extends AppCompatActivity implements AppItemListener {
+public class InstallAppsActivity extends AppCompatActivity {
 
     public static final String TAG = InstallAppsActivity.class.getSimpleName();
 
@@ -50,7 +48,7 @@ public class InstallAppsActivity extends AppCompatActivity implements AppItemLis
 
     private RecyclerView list;
     private AppAdapter adapter;
-    private CheckBox checkBoxAll;
+    private ImageButton installAll;
     private boolean appUnchecked = false;
 
     @Override
@@ -59,20 +57,34 @@ public class InstallAppsActivity extends AppCompatActivity implements AppItemLis
         setContentView(R.layout.install_apps_activity);
 
         list = findViewById(R.id.list);
-        adapter = new AppAdapter(this, this);
+        adapter = new AppAdapter(this);
         list.setAdapter(adapter);
 
-        checkBoxAll = findViewById(R.id.checkBoxAll);
-        checkBoxAll.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            if (isChecked) adapter.setAllChecked(true);
-            else if (!appUnchecked) adapter.setAllChecked(false);
+        installAll = findViewById(R.id.installAllButton);
+        installAll.setOnClickListener(v -> {
+            installAllApps();
         });
+
         View allLayout = findViewById(R.id.allLayout);
-        allLayout.setOnClickListener(v -> checkBoxAll.toggle());
+        allLayout.setOnClickListener(v ->
+                installAllApps());
 
         path = getString(R.string.calyx_fdroid_repo_location);
 
         getApps();
+    }
+
+    private void installAllApps() {
+        ArrayList<String> apks = adapter.getAllPackageNameAPKs();
+        if (apks.size() > 0) {
+            Intent i = new Intent(this, AppInstallerService.class);
+            i.putExtra(PATH, path);
+            i.putStringArrayListExtra(APKS, apks);
+            i.putStringArrayListExtra(PACKAGENAMES, adapter.getAllPackageNames());
+            startForegroundService(i);
+
+            //TODO add a progress indicator dialog and automatically remove all items from list when done installing.
+        }
     }
 
     protected int getLayoutResId() {
@@ -86,15 +98,6 @@ public class InstallAppsActivity extends AppCompatActivity implements AppItemLis
 
     protected int getIconResId() {
         return R.drawable.fdroid_logo;
-    }
-
-    @Override
-    public void onItemUnchecked() {
-        if (checkBoxAll.isChecked()) {
-            appUnchecked = true;
-            checkBoxAll.setChecked(false);
-            appUnchecked = false;
-        }
     }
 
     public void onNextPressed() {

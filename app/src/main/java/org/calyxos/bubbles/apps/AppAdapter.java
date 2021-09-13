@@ -17,7 +17,6 @@
 package org.calyxos.bubbles.apps;
 
 import android.annotation.NonNull;
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,7 +33,6 @@ import java.util.ArrayList;
 class AppAdapter extends Adapter<AppViewHolder> {
 
     private final FragmentActivity mActivity;
-    private final AppItemListener listener;
     private final SortedList<AppItem> items = new SortedList<>(AppItem.class, new Callback<AppItem>() {
         @Override
         public int compare(AppItem i1, AppItem i2) {
@@ -74,8 +72,7 @@ class AppAdapter extends Adapter<AppViewHolder> {
         }
     });
 
-    AppAdapter(AppItemListener listener, FragmentActivity activity) {
-        this.listener = listener;
+    AppAdapter(FragmentActivity activity) {
         mActivity = activity;
     }
 
@@ -83,7 +80,7 @@ class AppAdapter extends Adapter<AppViewHolder> {
     @Override
     public AppViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.list_item_app, viewGroup, false);
-        return new AppViewHolder(v, listener, mActivity);
+        return new AppViewHolder(v, mActivity);
     }
 
     @Override
@@ -124,6 +121,22 @@ class AppAdapter extends Adapter<AppViewHolder> {
         for (int i = 0; i < items.size(); i++) {
             AppItem item = items.get(i);
             if (item.checked) pkgNames.add(item.packageName);
+        }
+        return pkgNames;
+    }
+
+    ArrayList<String> getAllPackageNameAPKs() {
+        ArrayList<String> apkNames = new ArrayList<>();
+        for (int i = 0; i < items.size(); i++) {
+            apkNames.add(items.get(i).apkName);
+        }
+        return apkNames;
+    }
+
+    ArrayList<String> getAllPackageNames() {
+        ArrayList<String> pkgNames = new ArrayList<>();
+        for (int i = 0; i < items.size(); i++) {
+            pkgNames.add(items.get(i).packageName);
         }
         return pkgNames;
     }
