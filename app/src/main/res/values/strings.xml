@@ -4,7 +4,7 @@
     <!-- App install -->
     <string name="calyx_fdroid_repo_location" translatable="false">/product/fdroid/repo</string>
     <string name="install_apps_title">Additional apps</string>
-    <string name="install_apps_subtitle"><b>Suggested apps to install.</b> Check an app to install or uncheck to uninstall. No internet connection needed.</string>
+    <string name="install_apps_subtitle"><b>Suggested apps to install.</b> Tab the install button to install. No internet connection needed.</string>
     <!--<string name="install_apps_subtitle"><b>Review additional apps.</b> You can install them later as well.</string>-->
     <string name="install_apps_select_all">All of the following apps</string>
     <string name="waiting_for_apps">Please wait while we finish setting up your device.</string>
@@ -21,5 +21,5 @@
     <string name="zero_double">0.0</string>
     <string name="zero_int">0</string>
     <string name="null_app">Error: App data not initialized.</string>
-    <string name="ok">Ok</string>
+    <string name="ok">OK</string>
 </resources>
