@@ -9,7 +9,8 @@
     android:orientation="vertical"
     tools:context=".apps.InstallAppsActivity">
 
-    <include layout="@layout/header_condensed" />
+    <include layout="@layout/header_condensed"
+        android:visibility="gone"/>
 
     <TextView
         style="@style/PageSummaryText"
@@ -43,11 +44,18 @@
             android:text="@string/install_apps_select_all"
             android:textSize="15sp" />
 
-        <CheckBox
+        <!--<CheckBox
             android:id="@+id/checkBoxAll"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:checked="true" />
+            android:checked="true" />-->
+        <ImageButton
+            android:id="@+id/installAllButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/transparent_to_gray"
+            android:padding="5dp"
+            app:srcCompat="@drawable/ic_baseline_get_app_24" />
 
     </LinearLayout>
 
