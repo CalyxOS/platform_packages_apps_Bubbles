@@ -17,7 +17,13 @@
 package org.calyxos.bubbles.apps;
 
 import android.annotation.WorkerThread;
+import android.app.Activity;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.UserInfo;
 import android.graphics.drawable.Drawable;
+import android.os.UserHandle;
+import android.os.UserManager;
 import android.text.TextUtils;
 import android.util.Log;
 import androidx.recyclerview.widget.RecyclerView;
@@ -27,6 +33,7 @@ import org.calyxos.bubbles.util.FDroidUtils;
 import java.io.IOException;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 import org.json.JSONArray;
@@ -54,14 +61,25 @@ public class FDroidRepo {
     }
 
     @WorkerThread
-    public static void loadFdroidJson(String category, String path, RecyclerView list, AppAdapter adapter) {
+    public static void loadFdroidJson(String category, String path, RecyclerView list, AppAdapter adapter, Activity activity) {
+        //get all apps installed on device
+        final PackageManager pm = activity.getPackageManager();
+        final UserManager um = activity.getSystemService(UserManager.class);
+
+        List<ApplicationInfo> pks = new ArrayList<>();
+
+        for (UserInfo user : um.getProfiles(UserHandle.myUserId())) {
+            pks.addAll(pm.getInstalledApplicationsAsUser(PackageManager.GET_META_DATA, user.id));
+        }
+        //pks.addAll(pm.getInstalledApplications(PackageManager.GET_META_DATA)); //Used to test
+
         try {
             File index = new File(path + "/index-v1.json");
             JSONObject obj = new JSONObject(new String(IOUtils.toByteArray(index)));
             JSONArray apps = obj.getJSONArray("apps");
             JSONObject packages = obj.getJSONObject("packages");
             for (int i = 0; i < apps.length(); i++) {
-                addApp(category, path, apps.getJSONObject(i), packages, list, adapter);
+                addApp(category, path, apps.getJSONObject(i), packages, list, adapter, pks);
             }
         } catch (IOException | JSONException e) {
             Log.e(TAG, "Failed to parse local F-Droid repo index-v1.json" + e);
@@ -69,7 +87,8 @@ public class FDroidRepo {
     }
 
     @WorkerThread
-    public static void addApp(String category, String path, JSONObject app, JSONObject packages, RecyclerView list, AppAdapter adapter) {
+    public static void addApp(String category, String path, JSONObject app, JSONObject packages, RecyclerView list,
+                              AppAdapter adapter, List<ApplicationInfo> deviceApps) {
         try {
             JSONObject apk = packages.getJSONArray(app.getString("packageName")).getJSONObject(0);
 
@@ -139,7 +158,9 @@ public class FDroidRepo {
 
             AppItem item = new AppItem(icon, name, packageName, apkName,
                 categories, description, summary, author, checked);
-            list.post(() -> adapter.addItem(item));
+            //check if app is already installed. if so, don't show
+            if (deviceApps.stream().noneMatch(applicationInfo -> applicationInfo.packageName.equals(item.packageName)))
+                list.post(() -> adapter.addItem(item));
         } catch (JSONException e) {
             Log.e(TAG, "Failed to add app " + e);
         }

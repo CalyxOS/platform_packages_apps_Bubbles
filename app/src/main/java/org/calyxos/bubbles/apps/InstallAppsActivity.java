@@ -138,7 +138,7 @@ public class InstallAppsActivity extends AppCompatActivity implements AppInstall
             }
         }
         new Thread(() -> {
-            FDroidRepo.loadFdroidJson(FDROID_CATEGORY_DEFAULT, path, list, adapter);
+            FDroidRepo.loadFdroidJson(FDROID_CATEGORY_DEFAULT, path, list, adapter, this);
             list.post(() -> list.scrollToPosition(0));
         }).start();
     }
