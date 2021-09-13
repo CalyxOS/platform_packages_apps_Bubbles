@@ -18,13 +18,17 @@ package org.calyxos.bubbles.apps;
 
 import android.annotation.NonNull;
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.fragment.app.FragmentActivity;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.RecyclerView.ViewHolder;
 
 import org.calyxos.bubbles.R;
@@ -37,34 +41,41 @@ import static org.calyxos.bubbles.apps.AppInstallerService.PACKAGENAMES;
 import static org.calyxos.bubbles.apps.AppInstallerService.PATH;
 
 
-class AppViewHolder extends ViewHolder {
+class AppViewHolder extends ViewHolder implements AppInstallerService.InstallListener {
 
     private final ImageView icon;
     private final TextView name;
     private final TextView summary;
     private final ImageButton installButton;
+    private final ProgressBar progressBar;
     private Activity mActivity;
+    private final AppAdapter mAdapter;
+    private AppItem appItem;
 
     private final AppInfoDialogFragment dialog;
 
-    AppViewHolder(@NonNull View v, FragmentActivity activity) {
+    AppViewHolder(@NonNull View v, AppAdapter adapter, FragmentActivity activity) {
         super(v);
         mActivity = activity;
+        mAdapter = adapter;
 
         icon = v.findViewById(R.id.icon);
         name = v.findViewById(R.id.name);
         summary = v.findViewById(R.id.summary);
         installButton = v.findViewById(R.id.installButton);
+        progressBar = v.findViewById(R.id.progress);
 
         dialog = new AppInfoDialogFragment();
 
-        v.setOnClickListener(view ->
-                dialog.show(activity.getSupportFragmentManager(), "Dialog")
-        );
+        v.setOnClickListener(view -> dialog.show(activity.getSupportFragmentManager(), "Dialog"));
     }
 
     void bind(AppItem item) {
         dialog.setApp(item);
+        dialog.setAdapter(mAdapter);
+        dialog.setAdapterPosition(getAbsoluteAdapterPosition());
+
+        appItem = item;
 
         icon.setImageDrawable(item.icon);
         name.setText(item.name);
@@ -86,8 +97,32 @@ class AppViewHolder extends ViewHolder {
 
             mActivity.startForegroundService(i);
 
-            //TODO add a progress indicator and automatically remove item from list when done installing.
+            AppInstallerService.addListener(this);
         });
     }
 
+    @Override
+    public void onInstallStart(String apk) {
+        installButton.setVisibility(View.GONE);
+        progressBar.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void onInstallSuccess(String apk) {
+        Toast.makeText(mActivity, mActivity.getString(R.string.successful_install, apk), Toast.LENGTH_SHORT).show();
+        switchViews();
+        installButton.setImageDrawable(mActivity.getDrawable(R.drawable.ic_baseline_check_24));
+        mAdapter.removeItem(appItem, getAbsoluteAdapterPosition());
+    }
+
+    @Override
+    public void onInstallFailed(String apk) {
+        switchViews();
+        Toast.makeText(mActivity, mActivity.getString(R.string.failed_install, apk), Toast.LENGTH_SHORT).show();
+    }
+
+    private void switchViews() {
+        progressBar.setVisibility(View.GONE);
+        installButton.setVisibility(View.VISIBLE);
+    }
 }

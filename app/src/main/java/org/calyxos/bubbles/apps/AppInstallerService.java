@@ -56,6 +56,8 @@ public class AppInstallerService extends IntentService {
     private static ArrayList<String> mPackagesInstalled = new ArrayList<>();
     private static Boolean mAllAppsInstalled = false;
 
+    private static InstallListener mListener;
+
     public AppInstallerService() {
         super(TAG);
     }
@@ -78,9 +80,12 @@ public class AppInstallerService extends IntentService {
         mPackagesExpected = i.getStringArrayListExtra(PACKAGENAMES);
         for (String apk : apks) {
             try {
+                mListener.onInstallStart(apk);
                 packageInstaller.install(new File(path + "/" + apk));
+                mListener.onInstallSuccess(apk);
             } catch (IOException | SecurityException e) {
                 e.printStackTrace();
+                mListener.onInstallFailed(apk);
             }
         }
         try {
@@ -151,6 +156,18 @@ public class AppInstallerService extends IntentService {
 
     public static Boolean areAllAppsInstalled() {
         return mAllAppsInstalled;
+    }
+
+    public interface InstallListener {
+        void onInstallStart(String apk);
+
+        void onInstallSuccess(String apk);
+
+        void onInstallFailed(String apk);
+    }
+
+    public static void addListener(InstallListener listener) {
+        mListener = listener;
     }
 
 }

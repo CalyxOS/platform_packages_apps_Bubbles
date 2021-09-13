@@ -29,8 +29,9 @@ import androidx.recyclerview.widget.SortedList.Callback;
 import org.calyxos.bubbles.R;
 
 import java.util.ArrayList;
+import java.util.List;
 
-class AppAdapter extends Adapter<AppViewHolder> {
+public class AppAdapter extends Adapter<AppViewHolder> {
 
     private final FragmentActivity mActivity;
     private final SortedList<AppItem> items = new SortedList<>(AppItem.class, new Callback<AppItem>() {
@@ -139,6 +140,20 @@ class AppAdapter extends Adapter<AppViewHolder> {
             pkgNames.add(items.get(i).packageName);
         }
         return pkgNames;
+    }
+
+    public void removeItem(AppItem app, int position) {
+        items.remove(app);
+        notifyItemRemoved(position);
+    }
+
+    public List<AppItem> getItems() {
+        List<AppItem> list = new ArrayList<>();
+        for(int i = 0; i < items.size(); i++) {
+            list.add(items.get(i));
+        }
+
+        return list;
     }
 
     interface AppItemListener {

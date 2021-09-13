@@ -57,6 +57,13 @@
             android:padding="5dp"
             app:srcCompat="@drawable/ic_baseline_get_app_24" />
 
+        <ProgressBar
+            android:id="@+id/progress"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:indeterminateTint="@color/teal_700"
+            android:visibility="gone"/>
+
     </LinearLayout>
 
     <include layout="@layout/divider" />

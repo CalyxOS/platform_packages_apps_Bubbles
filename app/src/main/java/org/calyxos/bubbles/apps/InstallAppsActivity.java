@@ -22,6 +22,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -33,6 +35,9 @@ import org.json.JSONException;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 
 import static java.util.Objects.requireNonNull;
 import static org.calyxos.bubbles.apps.AppInstallerService.APKS;
@@ -40,7 +45,7 @@ import static org.calyxos.bubbles.apps.AppInstallerService.PACKAGENAMES;
 import static org.calyxos.bubbles.apps.AppInstallerService.PATH;
 import static org.calyxos.bubbles.apps.FDroidRepo.FDROID_CATEGORY_DEFAULT;
 
-public class InstallAppsActivity extends AppCompatActivity {
+public class InstallAppsActivity extends AppCompatActivity implements AppInstallerService.InstallListener {
 
     public static final String TAG = InstallAppsActivity.class.getSimpleName();
 
@@ -49,7 +54,7 @@ public class InstallAppsActivity extends AppCompatActivity {
     private RecyclerView list;
     private AppAdapter adapter;
     private ImageButton installAll;
-    private boolean appUnchecked = false;
+    private ProgressBar progress;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -64,6 +69,8 @@ public class InstallAppsActivity extends AppCompatActivity {
         installAll.setOnClickListener(v -> {
             installAllApps();
         });
+
+        progress = findViewById(R.id.progress);
 
         View allLayout = findViewById(R.id.allLayout);
         allLayout.setOnClickListener(v ->
@@ -136,4 +143,54 @@ public class InstallAppsActivity extends AppCompatActivity {
         }).start();
     }
 
+    @Override
+    public void onInstallStart(String apk) {
+        installAll.setVisibility(View.GONE);
+        progress.setVisibility(View.VISIBLE);
+        list.setEnabled(false);//to prevent users from clicking install on the apps while this is going on
+    }
+
+    @Override
+    public void onInstallSuccess(String apk) {
+        Toast.makeText(this, getString(R.string.successful_install, apk), Toast.LENGTH_SHORT).show();
+        switchViews();
+        //determine which app at what position was installed and update the list
+        AtomicReference<AppItem> app = new AtomicReference<>(); AtomicInteger position = new AtomicInteger();
+        List<AppItem> list = adapter.getItems();
+        list.forEach(appItem -> {
+            if (appItem.getApkName().equals(apk)) {
+                app.set(appItem);
+                position.set(list.indexOf(appItem));
+            }
+        });
+        adapter.removeItem(app.get(), position.get());
+
+        //if app is the last re-enable the list
+        if (position.get() == list.size() - 1)
+            this.list.setEnabled(true);
+    }
+
+    @Override
+    public void onInstallFailed(String apk) {
+        switchViews();
+        Toast.makeText(this, getString(R.string.failed_install, apk), Toast.LENGTH_SHORT).show();
+
+        //determine which app was installed and get position
+        AtomicInteger position = new AtomicInteger();
+        List<AppItem> list = adapter.getItems();
+        list.forEach(appItem -> {
+            if (appItem.getApkName().equals(apk)) {
+                position.set(list.indexOf(appItem));
+            }
+        });
+
+        //if app is the last re-enable the list
+        if (position.get() == list.size() - 1)
+            this.list.setEnabled(true);
+    }
+
+    private void switchViews() {
+        progress.setVisibility(View.GONE);
+        installAll.setVisibility(View.VISIBLE);
+    }
 }

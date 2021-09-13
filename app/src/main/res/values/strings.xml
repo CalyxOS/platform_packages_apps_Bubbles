@@ -22,4 +22,6 @@
     <string name="zero_int">0</string>
     <string name="null_app">Error: App data not initialized.</string>
     <string name="ok">OK</string>
+    <string name="failed_install">%1$s failed to install.</string>
+    <string name="successful_install">%1$s installed successfully.</string>
 </resources>

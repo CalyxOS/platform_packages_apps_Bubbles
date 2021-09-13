@@ -8,10 +8,12 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.fragment.app.DialogFragment;
 
 import org.calyxos.bubbles.R;
+import org.calyxos.bubbles.apps.AppAdapter;
 import org.calyxos.bubbles.apps.AppInstallerService;
 import org.calyxos.bubbles.apps.AppItem;
 import org.calyxos.bubbles.databinding.AppInfoDialogViewBinding;
@@ -23,12 +25,14 @@ import static org.calyxos.bubbles.apps.AppInstallerService.APKS;
 import static org.calyxos.bubbles.apps.AppInstallerService.PACKAGENAMES;
 import static org.calyxos.bubbles.apps.AppInstallerService.PATH;
 
-public class AppInfoDialogFragment extends DialogFragment {
+public class AppInfoDialogFragment extends DialogFragment implements AppInstallerService.InstallListener {
 
     private static String path;
     private AppItem app;
     private Activity activity;
     private AppInfoDialogViewBinding binding;
+    private AppAdapter mAdapter;
+    private int adapterPosition;
 
     public AppInfoDialogFragment() {
     }
@@ -64,7 +68,7 @@ public class AppInfoDialogFragment extends DialogFragment {
                 i.putStringArrayListExtra(PACKAGENAMES, pks);
                 requireActivity().startForegroundService(i);
 
-                dismiss();
+                AppInstallerService.addListener(this);
             });
 
             binding.launchFDroid.setOnClickListener(v -> {
@@ -93,11 +97,45 @@ public class AppInfoDialogFragment extends DialogFragment {
         this.app = app;
     }
 
+    public void setAdapter(AppAdapter adapter) {
+        mAdapter = adapter;
+    }
+
+    public void setAdapterPosition(int position) {
+        adapterPosition = position;
+    }
+
     public Activity getAssociatedActivity() {
         return activity;
     }
 
     public void setAssociatedActivity(Activity activity) {
         this.activity = activity;
+    }
+
+    @Override
+    public void onInstallStart(String apk) {
+        binding.installButton.setVisibility(View.GONE);
+        binding.progress.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void onInstallSuccess(String apk) {
+        Toast.makeText(requireActivity(), requireActivity().getString(R.string.successful_install, apk), Toast.LENGTH_SHORT).show();
+        switchViews();
+        binding.installButton.setImageDrawable(requireActivity().getDrawable(R.drawable.ic_baseline_check_24));
+        mAdapter.removeItem(app, adapterPosition);
+        dismiss();
+    }
+
+    @Override
+    public void onInstallFailed(String apk) {
+        switchViews();
+        Toast.makeText(requireActivity(), requireActivity().getString(R.string.failed_install, apk), Toast.LENGTH_SHORT).show();
+    }
+
+    private void switchViews() {
+        binding.progress.setVisibility(View.GONE);
+        binding.installButton.setVisibility(View.VISIBLE);
     }
 }
