@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a4d9cd84_4870afe8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2021-09-14T16:45:38Z",
+      "side": 1,
+      "message": "Unsure if this works with AOSP build / Android.bp",
+      "revId": "bba133f2cbc7f98b56068f778e5e6219a90cbfe2",
+      "serverId": "35266860-6252-469c-a67d-185064479fc0"
+    }
+  ]
+}
