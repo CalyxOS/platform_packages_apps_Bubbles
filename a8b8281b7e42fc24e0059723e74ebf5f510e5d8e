@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c98b5265_86d38110",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000014
+      },
+      "writtenOn": "2021-09-14T01:12:22Z",
+      "side": 1,
+      "message": "@cdesai kindly review the toggle state initialization to confirm that it\u0027s the proper way to go about it.",
+      "revId": "a8b8281b7e42fc24e0059723e74ebf5f510e5d8e",
+      "serverId": "35266860-6252-469c-a67d-185064479fc0"
+    }
+  ]
+}
