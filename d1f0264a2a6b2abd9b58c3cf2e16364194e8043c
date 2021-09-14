@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7fe51587_e5cbe517",
+        "filename": "app/src/main/res/values/strings.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2021-09-14T16:45:23Z",
+      "side": 1,
+      "message": "What do you need this for?",
+      "revId": "d1f0264a2a6b2abd9b58c3cf2e16364194e8043c",
+      "serverId": "35266860-6252-469c-a67d-185064479fc0"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6bcd4888_2f0448fd",
+        "filename": "app/src/main/res/values/strings.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2021-09-14T16:45:23Z",
+      "side": 1,
+      "message": "Should be F-Droid",
+      "revId": "d1f0264a2a6b2abd9b58c3cf2e16364194e8043c",
+      "serverId": "35266860-6252-469c-a67d-185064479fc0"
+    }
+  ]
+}
