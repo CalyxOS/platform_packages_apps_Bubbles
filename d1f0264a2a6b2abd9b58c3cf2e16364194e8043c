@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "cc3cc643_9f87a1c8",
+        "filename": "app/src/main/res/values/strings.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1000014
+      },
+      "writtenOn": "2021-09-14T17:10:39Z",
+      "side": 1,
+      "message": "It was going to be used in the dialog UI but I think it\u0027s not useful.",
+      "parentUuid": "7fe51587_e5cbe517",
+      "revId": "d1f0264a2a6b2abd9b58c3cf2e16364194e8043c",
+      "serverId": "35266860-6252-469c-a67d-185064479fc0"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "6bcd4888_2f0448fd",
         "filename": "app/src/main/res/values/strings.xml",
         "patchSetId": 1
