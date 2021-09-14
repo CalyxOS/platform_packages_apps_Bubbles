@@ -22,7 +22,10 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -45,7 +48,7 @@ import static org.calyxos.bubbles.apps.AppInstallerService.PACKAGENAMES;
 import static org.calyxos.bubbles.apps.AppInstallerService.PATH;
 import static org.calyxos.bubbles.apps.FDroidRepo.FDROID_CATEGORY_DEFAULT;
 
-public class InstallAppsActivity extends AppCompatActivity implements AppInstallerService.InstallListener {
+public class InstallAppsActivity extends AppCompatActivity implements AppInstallerService.InstallListener, View.OnClickListener {
 
     public static final String TAG = InstallAppsActivity.class.getSimpleName();
 
@@ -55,11 +58,21 @@ public class InstallAppsActivity extends AppCompatActivity implements AppInstall
     private AppAdapter adapter;
     private ImageButton installAll;
     private ProgressBar progress;
+    private LinearLayout linearLayout;
+    private ImageView microGIcon;
+    private TextView microGText;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.install_apps_activity);
+
+        linearLayout = findViewById(R.id.microG);
+        microGIcon = findViewById(R.id.microGIcon);
+        microGText = findViewById(R.id.microGText);
+        linearLayout.setOnClickListener(this);
+        microGIcon.setOnClickListener(this);
+        microGText.setOnClickListener(this);
 
         list = findViewById(R.id.list);
         adapter = new AppAdapter(this);
@@ -192,5 +205,10 @@ public class InstallAppsActivity extends AppCompatActivity implements AppInstall
     private void switchViews() {
         progress.setVisibility(View.GONE);
         installAll.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void onClick(View v) {
+        startActivity(new Intent(this, MicroGActivity.class));
     }
 }

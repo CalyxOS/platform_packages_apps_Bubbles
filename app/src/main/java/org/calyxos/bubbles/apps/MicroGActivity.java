@@ -16,19 +16,21 @@
 
 package org.calyxos.bubbles.apps;
 
-import android.app.Activity;
 import android.annotation.Nullable;
-import android.content.Intent;
+import android.app.Activity;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.Switch;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+
 import org.calyxos.bubbles.R;
 
 import static android.content.pm.PackageManager.COMPONENT_ENABLED_STATE_DISABLED;
 import static android.content.pm.PackageManager.COMPONENT_ENABLED_STATE_ENABLED;
 
-public class MicroGActivity extends Activity {
+public class MicroGActivity extends AppCompatActivity {
 
     public static final String TAG = MicroGActivity.class.getSimpleName();
     private static final String[] MICROG_PACKAGES = new String[]{
@@ -46,11 +48,42 @@ public class MicroGActivity extends Activity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.microg_activity);
 
-        enableSwitch = findViewById(R.id.enableSwitch);
-        findViewById(R.id.switchLayout).setOnClickListener(v -> enableSwitch.toggle());
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         pm = getPackageManager();
+
+        enableSwitch = findViewById(R.id.enableSwitch);
+        //init state
+        enableSwitch.setChecked(isMicroGEnabled());
+
+        findViewById(R.id.switchLayout).setOnClickListener(v -> {
+            enableSwitch.toggle();
+            if(enableSwitch.isChecked()) {
+                iteratePackages(true);
+            } else {
+                iteratePackages(false);
+            }
+        });
+    }
+
+    private boolean isMicroGEnabled() {
+        boolean enabled = false;
+        for (String packageId : MICROG_PACKAGES) {
+            if (pm.getApplicationEnabledSetting(packageId) == COMPONENT_ENABLED_STATE_DISABLED) {
+                enabled = false;
+                break;
+            } else enabled = true;
+        }
+
+        return enabled;
+    }
+
+    private void iteratePackages(boolean enabled) {
+        for (String packageId : MICROG_PACKAGES) {
+            setAppEnabled(packageId, true);
+        }
     }
 
     protected int getLayoutResId() {

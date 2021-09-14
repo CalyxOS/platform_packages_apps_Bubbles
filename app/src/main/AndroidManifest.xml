@@ -31,10 +31,17 @@
         android:theme="@style/Theme.Bubbles">
 
         <activity android:name=".apps.MicroGActivity"
-                  android:exported="false" />
+            android:parentActivityName=".apps.InstallAppsActivity"
+            android:theme="@style/Theme.Bubbles"
+            android:label="@string/microg_title"
+            android:exported="false">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".apps.InstallAppsActivity" />
+        </activity>
 
         <activity android:name=".apps.InstallAppsActivity"
-                  android:exported="true">
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
