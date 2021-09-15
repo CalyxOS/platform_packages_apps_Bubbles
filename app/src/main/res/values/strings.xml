@@ -14,8 +14,7 @@
     <string name="microg_description">This allows apps such as <b>Google Maps, Youtube and ride sharing services</b> to run on CalyxOS. Disable this if you don\'t plan on running apps that require Google services. You will not be able to enable it later.</string>
     <string name="microg_switch_label">Enable Google Services Compatibility</string>
     <string name="microg_warning">Note: If you enable this now, your phone will be set up to send data to Google.  You can change this later in the microG settings.</string>
-    <string name="dot">.</string>
-    <string name="open_fdroid">Open In FDroid</string>
+    <string name="open_fdroid">F-Droid</string>
     <string name="developer">developer</string>
     <string name="size">size</string>
     <string name="zero_double">0.0</string>
